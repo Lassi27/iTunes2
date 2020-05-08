@@ -5,11 +5,16 @@ function run() {
 
     var numOfTopSongs = document.getElementById("number").value;
 
-    $.ajax({
-        url: 'http://itunes.apple.com/search?term=' + artist + "&limit=" + numOfTopSongs,
-        dataType: "json",
-        success: process
-    });
+    if (artist == ""){
+        document.getElementById('output').innerHTML = ("no input provided, please type artist name")
+    }else{
+        $.ajax({
+            url: 'http://itunes.apple.com/search?term=' + artist + "&limit=" + numOfTopSongs,
+            dataType: "json",
+            success: process
+        });
+    }
+
 
 }
 
@@ -24,11 +29,9 @@ function process(data) {
         //song rank---
         var img = $('<img />',
             {src : songs[p].artworkUrl60 });
-        var audio = $('<audio />',
-            {src : songs[p].previewUrl });
         o += "<td>" + songs[p].artistName + "</td>";
         o += "<td>" + songs[p].trackName + "</td>";
-        o += "<td>" + audio.appendTo('body') + "</td>";
+        o += "<td>" + songs[p].previewUrl + "</td>";
         o += "<td>" + songs[p].collectionName + "</td>";
         o += "<td>" + img.appendTo('body')+ "</td>";
         o += "</tr>";
@@ -36,6 +39,7 @@ function process(data) {
     var table = document.getElementById("output");
     table.innerHTML = o;
     table.style.display = "block";
+
 }
 
 
